@@ -10,19 +10,16 @@ export interface ContactEmailPayload {
 }
 
 export interface SendContactEmailResult {
-  provider: "smtp" | "resend" | "ethereal" | "file";
+  provider: "web3forms" | "smtp" | "resend" | "ethereal" | "file";
   previewUrl?: string;
 }
 
-let etherealAccount: nodemailer.TestAccount | null = null;
+function sanitizeAppPassword(password: string) {
+  return password.replace(/\s+/g, "").trim();
+}
 
-async function getEtherealAccount() {
-  if (!etherealAccount) {
-    etherealAccount = await nodemailer.createTestAccount();
-    console.log("[email] Dev mode: using Ethereal test inbox");
-    console.log(`[email] Test inbox user: ${etherealAccount.user}`);
-  }
-  return etherealAccount;
+function getRecipientEmail() {
+  return process.env.CONTACT_EMAIL?.trim() || "akliludesalegn3@gmail.com";
 }
 
 function buildEmailContent(payload: ContactEmailPayload) {
@@ -46,13 +43,60 @@ function buildEmailContent(payload: ContactEmailPayload) {
   return { subject, text, html };
 }
 
+function formatEmailError(error: unknown) {
+  const message = error instanceof Error ? error.message : "Unknown email error";
+
+  if (message.includes("BadCredentials") || message.includes("535-5.7.8")) {
+    return "Gmail rejected the App Password. Create a new one at https://myaccount.google.com/apppasswords (requires 2-Step Verification), update SMTP_PASS in .env.local, and restart the server.";
+  }
+
+  if (message.includes("Web3Forms")) {
+    return message;
+  }
+
+  return "Unable to send your message right now. Please try again or email akliludesalegn3@gmail.com directly.";
+}
+
+async function sendViaWeb3Forms(payload: ContactEmailPayload): Promise<SendContactEmailResult> {
+  const accessKey = process.env.WEB3FORMS_ACCESS_KEY?.trim();
+
+  if (!accessKey) {
+    throw new Error(
+      "Web3Forms is not configured. Get a free access key at https://web3forms.com and add WEB3FORMS_ACCESS_KEY to .env.local.",
+    );
+  }
+
+  const response = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      access_key: accessKey,
+      subject: `Portfolio contact from ${payload.name}`,
+      from_name: payload.name,
+      email: payload.email,
+      message: payload.message,
+    }),
+  });
+
+  const data = (await response.json()) as { success?: boolean; message?: string };
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.message ?? "Web3Forms failed to send the message.");
+  }
+
+  return { provider: "web3forms" };
+}
+
 async function sendViaResend(payload: ContactEmailPayload): Promise<SendContactEmailResult> {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_EMAIL;
+  const to = getRecipientEmail();
   const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
 
-  if (!apiKey || !to) {
-    throw new Error("Resend is not configured. Set RESEND_API_KEY and CONTACT_EMAIL.");
+  if (!apiKey) {
+    throw new Error("Resend is not configured. Set RESEND_API_KEY in .env.local.");
   }
 
   const resend = new Resend(apiKey);
@@ -75,67 +119,52 @@ async function sendViaResend(payload: ContactEmailPayload): Promise<SendContactE
 }
 
 async function sendViaSmtp(payload: ContactEmailPayload): Promise<SendContactEmailResult> {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT ?? "587");
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const to = process.env.CONTACT_EMAIL ?? user;
+  const user = process.env.SMTP_USER?.trim();
+  const pass = sanitizeAppPassword(process.env.SMTP_PASS ?? "");
+  const to = getRecipientEmail();
 
-  if (!host || !user || !pass || !to) {
-    throw new Error("SMTP is not configured. Set SMTP_HOST, SMTP_USER, SMTP_PASS, and CONTACT_EMAIL.");
+  if (!user || !pass) {
+    throw new Error("SMTP is not configured. Set SMTP_USER and SMTP_PASS in .env.local.");
   }
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-    tls: port === 587 ? { rejectUnauthorized: true } : undefined,
-  });
-
-  await transporter.verify();
-
   const { subject, text, html } = buildEmailContent(payload);
-  await transporter.sendMail({
+  const mailOptions = {
     from: `"Portfolio Contact" <${user}>`,
     to,
     replyTo: payload.email,
     subject,
     text,
     html,
-  });
+  };
 
-  return { provider: "smtp" };
-}
-
-async function sendViaEthereal(payload: ContactEmailPayload): Promise<SendContactEmailResult> {
-  const account = await getEtherealAccount();
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: {
-      user: account.user,
-      pass: account.pass,
+  const transportOptions = [
+    { service: "gmail" as const },
+    { host: "smtp.gmail.com", port: 465, secure: true },
+    {
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      requireTLS: true,
     },
-  });
+  ];
 
-  const { subject, text, html } = buildEmailContent(payload);
-  const info = await transporter.sendMail({
-    from: `"Portfolio Contact" <${account.user}>`,
-    to: process.env.CONTACT_EMAIL ?? account.user,
-    replyTo: payload.email,
-    subject,
-    text,
-    html,
-  });
+  let lastError: unknown;
 
-  const previewUrl = nodemailer.getTestMessageUrl(info) || undefined;
-  if (previewUrl) {
-    console.log(`[email] Preview message: ${previewUrl}`);
+  for (const options of transportOptions) {
+    try {
+      const transporter = nodemailer.createTransport({
+        ...options,
+        auth: { user, pass },
+      });
+
+      await transporter.sendMail(mailOptions);
+      return { provider: "smtp" };
+    } catch (error) {
+      lastError = error;
+    }
   }
 
-  return { provider: "ethereal", previewUrl };
+  throw lastError;
 }
 
 async function saveToFile(payload: ContactEmailPayload): Promise<SendContactEmailResult> {
@@ -154,19 +183,20 @@ async function saveToFile(payload: ContactEmailPayload): Promise<SendContactEmai
 }
 
 export function getEmailConfigStatus() {
-  const hasResend = Boolean(process.env.RESEND_API_KEY && process.env.CONTACT_EMAIL);
+  const hasWeb3Forms = Boolean(process.env.WEB3FORMS_ACCESS_KEY?.trim());
+  const hasResend = Boolean(process.env.RESEND_API_KEY?.trim());
   const hasSmtp = Boolean(
-    process.env.SMTP_HOST &&
-      process.env.SMTP_USER &&
-      process.env.SMTP_PASS &&
-      (process.env.CONTACT_EMAIL || process.env.SMTP_USER),
+    process.env.SMTP_USER?.trim() &&
+      sanitizeAppPassword(process.env.SMTP_PASS ?? "") &&
+      getRecipientEmail(),
   );
 
   return {
-    configured: hasResend || hasSmtp,
+    configured: hasWeb3Forms || hasResend || hasSmtp,
+    web3forms: hasWeb3Forms,
     resend: hasResend,
     smtp: hasSmtp,
-    developmentFallback: process.env.NODE_ENV === "development",
+    recipient: getRecipientEmail(),
   };
 }
 
@@ -174,25 +204,40 @@ export async function sendContactEmail(
   payload: ContactEmailPayload,
 ): Promise<SendContactEmailResult> {
   const status = getEmailConfigStatus();
+  const providers: Array<() => Promise<SendContactEmailResult>> = [];
+
+  if (status.web3forms) {
+    providers.push(() => sendViaWeb3Forms(payload));
+  }
 
   if (status.resend) {
-    return sendViaResend(payload);
+    providers.push(() => sendViaResend(payload));
   }
 
   if (status.smtp) {
-    return sendViaSmtp(payload);
+    providers.push(() => sendViaSmtp(payload));
   }
 
-  if (process.env.NODE_ENV === "development") {
-    try {
-      return await sendViaEthereal(payload);
-    } catch (error) {
-      console.error("[email] Ethereal fallback failed:", error);
+  if (providers.length === 0) {
+    if (process.env.NODE_ENV === "development") {
       return saveToFile(payload);
+    }
+
+    throw new Error(
+      "Email is not configured. Add WEB3FORMS_ACCESS_KEY or valid Gmail SMTP credentials to .env.local.",
+    );
+  }
+
+  let lastError: unknown;
+
+  for (const send of providers) {
+    try {
+      return await send();
+    } catch (error) {
+      lastError = error;
+      console.error("[email] Provider failed:", error);
     }
   }
 
-  throw new Error(
-    "Email is not configured. Add SMTP or Resend credentials to .env.local and restart the server.",
-  );
+  throw new Error(formatEmailError(lastError));
 }

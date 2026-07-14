@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Pricing } from "@/components/Pricing";
 import { ProblemShowcase } from "@/components/ProblemShowcase";
-import { ProjectTimeline } from "@/components/ProjectTimeline";
+import { ProjectFlow } from "@/components/ProjectFlow";
 import { Services } from "@/components/Services";
 import { Skills } from "@/components/Skills";
 import { Testimonials } from "@/components/Testimonials";
@@ -24,7 +24,7 @@ export default function Home() {
         <CaseStudies />
         <Testimonials />
         <Pricing />
-        <ProjectTimeline />
+        <ProjectFlow />
         <Contact />
       </main>
       <Footer />

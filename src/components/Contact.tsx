@@ -23,15 +23,60 @@ export function Contact() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+
+    if (name.length < 2) {
+      setStatus("error");
+      setErrorMessage("Name must be at least 2 characters");
+      return;
+    }
+    if (!email.includes("@")) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid email");
+      return;
+    }
+    if (message.length < 10) {
+      setStatus("error");
+      setErrorMessage("Message must be at least 10 characters");
+      return;
+    }
+
     try {
+      if (accessKey) {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_key: accessKey,
+            subject: `Portfolio contact from ${name}`,
+            from_name: name,
+            email,
+            message,
+          }),
+        });
+
+        const data = (await response.json()) as { success?: boolean; message?: string };
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message ?? "Failed to send message");
+        }
+
+        setStatus("success");
+        setSuccessMessage("Your message has been sent. I'll get back to you within 48 hours.");
+        form.reset();
+        return;
+      }
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email"),
-          message: formData.get("message"),
-        }),
+        body: JSON.stringify({ name, email, message }),
       });
 
       const data = await response.json();

@@ -3,9 +3,10 @@ export const siteConfig = {
   title: "Full-Stack Developer, Graphic Designer, Virtual Assistant",
   tagline: "Building modern web experiences with creative design and reliable support",
   experience: "2+ years of experience",
-  email: "aklilu.desalegn@example.com",
-  linkedin: "https://linkedin.com/in/akliludesalegn",
-  github: "https://github.com/akliludesalegn",
+  email: "akliludesalegn3@gmail.com",
+  linkedin:
+    "https://www.linkedin.com/in/aklilu-desalegn-29557b365?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+  github: "https://github.com/ake0507",
   twitter: "https://twitter.com/akliludesalegn",
 };
 
@@ -139,7 +140,7 @@ export const caseStudies = [
 export const pricingPackages = [
   {
     name: "Basic",
-    price: "$500",
+    price: "$250",
     description: "Ideal for startups and small projects getting started online.",
     features: {
       development: "1–2 page website",
@@ -150,7 +151,7 @@ export const pricingPackages = [
   },
   {
     name: "Professional",
-    price: "$1,500",
+    price: "$500",
     description: "Best for growing businesses that need a complete digital presence.",
     features: {
       development: "Multi-page site + CMS",
@@ -199,35 +200,25 @@ export const testimonials = [
   },
 ];
 
-export const timeline = [
+export const projectFlow = [
   {
     phase: "Discovery & Planning",
     description: "Requirements gathering, goals, and project scope",
-    duration: "1–3 weeks",
-    date: "Week 1–3",
   },
   {
     phase: "Design",
     description: "Wireframes, mockups, and design approval",
-    duration: "1–3 weeks",
-    date: "Week 3–6",
   },
   {
     phase: "Development",
     description: "Front-end and back-end coding",
-    duration: "2–6 weeks",
-    date: "Week 6–12",
   },
   {
     phase: "Testing & QA",
     description: "Bug fixes, optimization, and quality assurance",
-    duration: "1–2 weeks",
-    date: "Week 12–14",
   },
   {
     phase: "Launch",
     description: "Deployment, training, and handoff",
-    duration: "1 week",
-    date: "Week 14–15",
   },
 ];

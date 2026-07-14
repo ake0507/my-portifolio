@@ -18,10 +18,11 @@ export async function GET() {
   return NextResponse.json({
     configured: status.configured,
     providers: {
+      web3forms: status.web3forms,
       resend: status.resend,
       smtp: status.smtp,
-      developmentFallback: status.developmentFallback,
     },
+    recipient: status.recipient,
   });
 }
 
@@ -50,7 +51,7 @@ export async function POST(request: Request) {
 
     if (result.provider === "file") {
       response.message =
-        "Message saved locally in development mode. Configure SMTP or Resend in .env.local to send real emails.";
+        "Message saved locally in development mode. Add WEB3FORMS_ACCESS_KEY to .env.local to send real emails.";
     }
 
     return NextResponse.json(response);
