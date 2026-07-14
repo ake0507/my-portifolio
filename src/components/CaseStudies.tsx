@@ -1,3 +1,5 @@
+"use client";
+
 import { Section } from "@/components/ui/Section";
 import { caseStudies } from "@/lib/data";
 
@@ -41,13 +43,25 @@ export function CaseStudies() {
 
               <div className="grid grid-cols-2 gap-4">
                 <figure className="overflow-hidden rounded-xl border border-slate-200">
-                  <div
-                    className="flex h-40 items-center justify-center bg-slate-200 text-center text-xs font-medium text-slate-500 sm:h-48"
-                    role="img"
-                    aria-label={study.beforeLabel}
-                  >
-                    Before
-                  </div>
+                  {study.beforeImage ? (
+                    <img
+                      src={study.beforeImage}
+                      alt={study.beforeLabel}
+                      className="h-40 w-full object-cover sm:h-48"
+                      onError={(e) => {
+                        // fallback to profile image if the before image is missing
+                        e.currentTarget.src = "/images/aklilu-profile.png";
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="flex h-40 items-center justify-center bg-slate-200 text-center text-xs font-medium text-slate-500 sm:h-48"
+                      role="img"
+                      aria-label={study.beforeLabel}
+                    >
+                      Before
+                    </div>
+                  )}
                   <figcaption className="px-3 py-2 text-xs text-slate-500">
                     {study.beforeLabel}
                   </figcaption>

@@ -133,6 +133,7 @@ export const caseStudies = [
       "Set up email workflows, calendar automation, and data entry systems to streamline daily operations.",
     impact: "Saved 12+ hours per week; improved response times by 60%.",
     beforeLabel: "Before: disorganized inbox and missed meetings",
+    beforeImage: "/images/project-gamma-before.svg",
     afterLabel: "After: structured workflows and proactive scheduling",
   },
 ];

@@ -1,0 +1,21 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" rx="24" fill="#F8FAFC"/>
+  <rect x="48" y="48" width="704" height="404" rx="20" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  <rect x="84" y="92" width="248" height="148" rx="16" fill="#FEE2E2"/>
+  <rect x="356" y="92" width="360" height="148" rx="16" fill="#DBEAFE"/>
+  <rect x="84" y="270" width="632" height="132" rx="16" fill="#F1F5F9"/>
+  <rect x="116" y="116" width="84" height="12" rx="6" fill="#F87171"/>
+  <rect x="116" y="142" width="132" height="12" rx="6" fill="#FB923C"/>
+  <rect x="116" y="168" width="108" height="12" rx="6" fill="#F59E0B"/>
+  <rect x="388" y="120" width="148" height="16" rx="8" fill="#2563EB"/>
+  <rect x="388" y="152" width="212" height="12" rx="6" fill="#60A5FA"/>
+  <rect x="388" y="176" width="176" height="12" rx="6" fill="#93C5FD"/>
+  <rect x="116" y="304" width="168" height="16" rx="8" fill="#475569"/>
+  <rect x="116" y="336" width="252" height="12" rx="6" fill="#94A3B8"/>
+  <rect x="116" y="360" width="204" height="12" rx="6" fill="#CBD5E1"/>
+  <circle cx="632" cy="328" r="56" fill="#F59E0B" fill-opacity="0.18"/>
+  <path d="M632 292C650.778 292 666 307.222 666 326C666 344.778 650.778 360 632 360C613.222 360 598 344.778 598 326C598 307.222 613.222 292 632 292Z" stroke="#F59E0B" stroke-width="10"/>
+  <path d="M632 304L632 348" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <path d="M608 326H656" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <text x="400" y="454" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#334155">Before: disorganized inbox and missed meetings</text>
+</svg>

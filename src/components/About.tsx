@@ -9,12 +9,12 @@ export function About() {
       className="bg-white"
     >
       <div className="grid items-center gap-12 lg:grid-cols-2">
-        <div
-          className="mx-auto flex h-64 w-64 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-7xl font-bold text-white shadow-xl lg:mx-0 lg:h-80 lg:w-80"
-          role="img"
-          aria-label="Stylized avatar representing Aklilu Desalegn"
-        >
-          AD
+        <div className="mx-auto lg:mx-0">
+          <img
+            src="/images/aklilu-profile.png"
+            alt="Aklilu Desalegn - Full-stack engineer and designer"
+            className="h-64 w-64 rounded-2xl object-cover shadow-xl lg:h-80 lg:w-80"
+          />
         </div>
 
         <div className="space-y-4 text-slate-600">
