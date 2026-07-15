@@ -47,7 +47,7 @@ export function CaseStudies() {
                     <img
                       src={study.beforeImage}
                       alt={study.beforeLabel}
-                      className="h-40 w-full object-cover sm:h-48"
+                      className="h-48 w-full object-contain sm:h-60"
                       onError={(e) => {
                         // fallback to profile image if the before image is missing
                         e.currentTarget.src = "/images/aklilu-profile.png";
@@ -67,13 +67,24 @@ export function CaseStudies() {
                   </figcaption>
                 </figure>
                 <figure className="overflow-hidden rounded-xl border border-indigo-200">
-                  <div
-                    className="flex h-40 items-center justify-center bg-indigo-100 text-center text-xs font-medium text-indigo-600 sm:h-48"
-                    role="img"
-                    aria-label={study.afterLabel}
-                  >
-                    After
-                  </div>
+                  {study.afterImage ? (
+                    <img
+                      src={study.afterImage}
+                      alt={study.afterLabel}
+                      className="h-48 w-full object-contain sm:h-60"
+                      onError={(e) => {
+                        e.currentTarget.src = "/images/aklilu-profile.png";
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="flex h-40 items-center justify-center bg-indigo-100 text-center text-xs font-medium text-indigo-600 sm:h-48"
+                      role="img"
+                      aria-label={study.afterLabel}
+                    >
+                      After
+                    </div>
+                  )}
                   <figcaption className="px-3 py-2 text-xs text-slate-500">
                     {study.afterLabel}
                   </figcaption>

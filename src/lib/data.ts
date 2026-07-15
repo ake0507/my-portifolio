@@ -115,7 +115,9 @@ export const caseStudies = [
       "Delivered a new logo system, brand guidelines, and a performant Next.js site with CMS integration.",
     impact: "Site load time cut in half; brand recall increased across channels.",
     beforeLabel: "Before: outdated logo and cluttered layout",
+    beforeImage: "/images/before-logo.png",
     afterLabel: "After: modern brand identity and clean responsive site",
+    afterImage: "/images/after1-logo.png",
   },
   {
     title: "Project Beta: E-Commerce Platform",
@@ -124,7 +126,9 @@ export const caseStudies = [
       "Built a full-stack e-commerce app with payment integration, inventory management, and admin dashboard.",
     impact: "Online sales doubled within three months of launch.",
     beforeLabel: "Before: spreadsheet-based order tracking",
+    beforeImage: "/images/before-ecommerce.png",
     afterLabel: "After: automated e-commerce platform",
+    afterImage: "/images/after-ecommerce.png",
   },
   {
     title: "Project Gamma: VA Operations",
@@ -133,8 +137,9 @@ export const caseStudies = [
       "Set up email workflows, calendar automation, and data entry systems to streamline daily operations.",
     impact: "Saved 12+ hours per week; improved response times by 60%.",
     beforeLabel: "Before: disorganized inbox and missed meetings",
-    beforeImage: "/images/project-gamma-before.svg",
+    beforeImage: "/images/project-gamma-before.png",
     afterLabel: "After: structured workflows and proactive scheduling",
+    afterImage: "/images/project-gamma-after.png",
   },
 ];
 

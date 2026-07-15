@@ -1,0 +1,28 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="750" rx="32" fill="#F8FAFC"/>
+  <rect x="60" y="60" width="1080" height="630" rx="28" fill="white" stroke="#DBEAFE" stroke-width="3"/>
+  <rect x="100" y="120" width="320" height="220" rx="24" fill="#ECFDF5" stroke="#86EFAC" stroke-width="2"/>
+  <rect x="460" y="120" width="560" height="220" rx="24" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="2"/>
+  <rect x="100" y="370" width="920" height="260" rx="24" fill="#EFF6FF" stroke="#DBEAFE" stroke-width="2"/>
+  <rect x="154" y="170" width="160" height="18" rx="9" fill="#059669"/>
+  <rect x="154" y="208" width="224" height="16" rx="8" fill="#6EE7B7"/>
+  <rect x="154" y="246" width="172" height="16" rx="8" fill="#A7F3D0"/>
+  <rect x="514" y="166" width="288" height="20" rx="10" fill="#2563EB"/>
+  <rect x="514" y="210" width="180" height="16" rx="8" fill="#93C5FD"/>
+  <rect x="514" y="246" width="232" height="16" rx="8" fill="#BFDBFE"/>
+  <rect x="154" y="420" width="280" height="20" rx="10" fill="#0F766E"/>
+  <rect x="154" y="462" width="424" height="16" rx="8" fill="#5EEAD4"/>
+  <rect x="154" y="500" width="324" height="16" rx="8" fill="#99F6E4"/>
+  <rect x="154" y="548" width="140" height="16" rx="8" fill="#22C55E"/>
+  <rect x="154" y="586" width="212" height="16" rx="8" fill="#86EFAC"/>
+  <rect x="154" y="624" width="102" height="16" rx="8" fill="#D9F99D"/>
+  <rect x="430" y="420" width="280" height="18" rx="9" fill="#2563EB"/>
+  <rect x="430" y="456" width="368" height="16" rx="8" fill="#93C5FD"/>
+  <rect x="430" y="492" width="316" height="16" rx="8" fill="#BFDBFE"/>
+  <rect x="430" y="540" width="312" height="16" rx="8" fill="#2563EB"/>
+  <path d="M852 460C868.569 460 882 473.431 882 490C882 506.569 868.569 520 852 520C835.431 520 822 506.569 822 490C822 473.431 835.431 460 852 460Z" fill="#4F46E5" fill-opacity="0.18"/>
+  <path d="M852 476C865.807 476 877 487.193 877 501C877 514.807 865.807 526 852 526C838.193 526 827 514.807 827 501C827 487.193 838.193 476 852 476Z" stroke="#4F46E5" stroke-width="12"/>
+  <path d="M852 492L852 516" stroke="#4F46E5" stroke-width="12" stroke-linecap="round"/>
+  <path d="M838 501H866" stroke="#4F46E5" stroke-width="12" stroke-linecap="round"/>
+  <text x="600" y="716" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#0F172A">After: structured workflows and proactive scheduling</text>
+</svg>
